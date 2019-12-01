@@ -1,12 +1,16 @@
-fn day_1_p2() -> i64 {
+fn day_1_p2() -> u64 {
     use std::fs;
 
-    fn calc_fuel(mass: f64) -> f64 {
-        let mut additional_fuel = f64::floor(mass / 3.0) - 2.0;
+    fn calc_fuel(mass: u64) -> u64 {
+        let mut additional_fuel = mass / 3 - 2;
         let mut total_fuel = additional_fuel;
-        while additional_fuel > 0.0 {
-            additional_fuel = f64::floor(additional_fuel / 3.0) - 2.0;
-            total_fuel += f64::max(additional_fuel, 0.0);
+        while additional_fuel > 0 {
+            if let Some(x) = (additional_fuel/ 3).checked_sub(2) {
+                additional_fuel = x;
+                total_fuel += x;
+            } else {
+                break
+            }
         }
         total_fuel
     }
@@ -15,21 +19,20 @@ fn day_1_p2() -> i64 {
     fs::read_to_string("input/1")
         .unwrap()
         .lines()
-        .map(|n| n.parse::<f64>().unwrap())
+        .map(|n| n.parse::<u64>().unwrap())
         .map(calc_fuel)
-        .sum::<f64>() as i64
+        .sum::<u64>()
 }
 
-fn day_1_p1() -> i64 {
+fn day_1_p1() -> u64 {
     use std::fs;
     fs::read_to_string("input/1")
         .unwrap()
         .lines()
-        .map(|n| n.parse::<f64>().unwrap())
-        .map(|n| f64::floor(n / 3.0) - 2.0)
-        .sum::<f64>() as i64
+        .map(|n| n.parse::<u64>().unwrap())
+        .map(|n| n / 3 - 2)
+        .sum()
 }
-
 
 fn main() {
     println!("{:?}", day_1_p2());
