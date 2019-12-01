@@ -1,4 +1,6 @@
-fn day_1_p2() -> u64 {
+mod tests;
+
+pub fn day_1_p2() -> u64 {
     use std::fs;
 
     fn calc_fuel(mass: u64) -> u64 {
@@ -15,7 +17,6 @@ fn day_1_p2() -> u64 {
         total_fuel
     }
 
-
     fs::read_to_string("input/1")
         .unwrap()
         .lines()
@@ -24,7 +25,7 @@ fn day_1_p2() -> u64 {
         .sum::<u64>()
 }
 
-fn day_1_p1() -> u64 {
+pub fn day_1_p1() -> u64 {
     use std::fs;
     fs::read_to_string("input/1")
         .unwrap()
