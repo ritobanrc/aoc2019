@@ -11,7 +11,7 @@ jobs:
     - uses: actions/checkout@v1
     - name: Install cargo-aoc
       run: cargo install cargo-aoc
-    - name: Build
-      run: cargo build --verbose
+    - name: Build library
+      run: cargo build --lib
     - name: Run tests
       run: cargo test --verbose
