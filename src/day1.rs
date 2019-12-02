@@ -30,3 +30,43 @@ pub fn day_1_p2(input: &str) -> u64 {
         .map(calc_fuel)
         .sum::<u64>()
 }
+
+#[cfg(test)]
+mod tests {
+    use super::*;
+
+    #[test]
+    fn p1_sample1() {
+        assert_eq!(day_1_p1("12"), 2)
+    }
+
+    #[test]
+    fn p1_sample2() {
+        assert_eq!(day_1_p1("14"), 2)
+    }
+
+    #[test]
+    fn p1_sample3() {
+        assert_eq!(day_1_p1("1969"), 654)
+    }
+
+    #[test]
+    fn p1_sample4() {
+        assert_eq!(day_1_p1("100756"), 33583)
+    }
+
+    #[test]
+    fn p2_sample1() {
+        assert_eq!(day_1_p2("12"), 2)
+    }
+
+    #[test]
+    fn p2_sample2() {
+        assert_eq!(day_1_p2("1969"), 966)
+    }
+
+    #[test]
+    fn p2_sample3() {
+        assert_eq!(day_1_p2("100756"), 50346)
+    }
+}
