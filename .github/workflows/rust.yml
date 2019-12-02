@@ -12,6 +12,6 @@ jobs:
     - name: Install cargo-aoc
       run: cargo install cargo-aoc
     - name: Build library
-      run: cargo build --lib
+      run: cargo build --verbose --lib
     - name: Run tests
-      run: cargo test --verbose
+      run: cargo test --verbose --lib 
