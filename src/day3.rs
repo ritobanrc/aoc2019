@@ -50,8 +50,8 @@ fn parse_wires(input: &str) -> [Vec<Step>; 2] {
 
 #[aoc(day3, part1)]
 fn solve_p1(wires: &[Vec<Step>; 2]) -> i32 {
-    let wire1_points = points_from_steps(&wires[0]);
-    let wire2_points = points_from_steps(&wires[1]);
+    let (wire1_points, _) = points_from_steps(&wires[0]);
+    let (wire2_points, _) = points_from_steps(&wires[1]);
 
     let intersections = wire1_points.intersection(&wire2_points);
 
@@ -69,56 +69,37 @@ fn parse_wires_p2(input: &str) -> [Vec<Step>; 2] {
 
 #[aoc(day3, part2)]
 fn solve_p2(wires: &[Vec<Step>; 2]) -> usize {
-    let wire1_points = points_from_steps(&wires[0]);
-    let wire2_points = points_from_steps(&wires[1]);
+    let (wire1_points, wire1_path) = points_from_steps(&wires[0]);
+    let (wire2_points, wire2_path) = points_from_steps(&wires[1]);
 
     let intersections = wire1_points.intersection(&wire2_points);
 
-    let wire1_points = path_from_steps(&wires[0]);
-    let wire2_points = path_from_steps(&wires[1]);
-
     let int = intersections
-        .min_by_key(|a| {
-            wire1_points
+        // Start by mapping each intersection to a (key, intersection) tuple
+        // Where key is the total number of steps in both wires
+        .map(|a| {
+            let key = wire1_path
                 .iter()
                 .position(|x| x[0] == a[0] && x[1] == a[1])
                 .unwrap()
-                + wire2_points
+                + 1
+                + wire2_path
                     .iter()
                     .position(|x| x[0] == a[0] && x[1] == a[1])
                     .unwrap()
+                + 1;
+            (key, a)
         })
+        .min_by_key(|a| a.0)
         .unwrap();
 
-    let num_steps = [
-        wire1_points
-            .iter()
-            .position(|x| x[0] == int[0] && x[1] == int[1])
-            .unwrap()
-            + 1,
-        wire2_points
-            .iter()
-            .position(|x| x[0] == int[0] && x[1] == int[1])
-            .unwrap()
-            + 1,
-    ];
-
-    num_steps[0] + num_steps[1]
+    int.0
 }
 
-fn points_from_steps(wire: &Vec<Step>) -> HashSet<[i32; 2]> {
-   let mut pos = [0, 0];
-    let mut wire_points = HashSet::new();
-
-    for step in wire {
-        let dir = step.dir();
-        for _ in 0..step.size() {
-            pos[0] += dir[0];
-            pos[1] += dir[1];
-            wire_points.insert(pos);
-        }
-    }
-    wire_points
+fn points_from_steps(wire: &Vec<Step>) -> (HashSet<[i32; 2]>, Vec<[i32; 2]>) {
+    use std::iter::FromIterator;
+    let path = path_from_steps(wire);
+    (HashSet::from_iter(path.clone().into_iter()), path)
 }
 
 fn path_from_steps(wire: &Vec<Step>) -> Vec<[i32; 2]> {
