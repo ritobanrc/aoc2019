@@ -1,5 +1,5 @@
 #[aoc_generator(day2, part1)]
-fn parse_program(input: &str) -> Vec<usize> {
+pub fn parse_program(input: &str) -> Vec<usize> {
     input
         .split(',')
         .map(|i| i.parse::<usize>().unwrap())

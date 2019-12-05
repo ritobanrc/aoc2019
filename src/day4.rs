@@ -58,7 +58,7 @@ fn count_passwords_p2(input: &str) -> usize {
 }
 
 
-fn get_digits(n: u64) -> Vec<u64> {
+pub fn get_digits(n: u64) -> Vec<u64> {
     fn next_digit(n: u64, digits: &mut Vec<u64>) {
         if n >= 10 {
             next_digit(n / 10, digits);
