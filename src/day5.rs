@@ -19,7 +19,7 @@ fn solve_p1(tape: &Vec<i32>) -> i32 {
 
         let opcode = if digits.len() == 2 {
             [digits[0], digits[1]]
-        } else if digits.len()  == 1 {
+        } else if digits.len() == 1 {
             [0, digits[0]]
         } else {
             [digits[digits.len() - 2], digits[digits.len() - 1]]
@@ -32,15 +32,14 @@ fn solve_p1(tape: &Vec<i32>) -> i32 {
                 let p1 = digits.get(digits.len() - 3).unwrap_or(&0);
                 let p2 = digits.get(digits.len() - 4).unwrap_or(&0);
 
-
                 let p1 = match p1 {
                     0 => tape[tape[i + 1] as usize],
-                    1 => tape[i+1],
+                    1 => tape[i + 1],
                     _ => unreachable!(),
                 };
                 let p2 = match p2 {
                     0 => tape[tape[i + 2] as usize],
-                    1 => tape[i+2],
+                    1 => tape[i + 2],
                     _ => unreachable!(),
                 };
 
@@ -54,15 +53,14 @@ fn solve_p1(tape: &Vec<i32>) -> i32 {
 
                 //println!("p1: {} p2: {}", p1, p2);
 
-
                 let p1 = match p1 {
                     0 => tape[tape[i + 1] as usize],
-                    1 => tape[i+1],
+                    1 => tape[i + 1],
                     _ => unreachable!(),
                 };
                 let p2 = match p2 {
                     0 => tape[tape[i + 2] as usize],
-                    1 => tape[i+2],
+                    1 => tape[i + 2],
                     _ => unreachable!(),
                 };
 
@@ -80,28 +78,24 @@ fn solve_p1(tape: &Vec<i32>) -> i32 {
             [0, 4] => {
                 if tape[i + 2] == 99 {
                     // This is the final output
-                    break tape[tape[i + 1] as usize]
+                    break tape[tape[i + 1] as usize];
                 } else {
                     println!("{:?}", tape[tape[i + 1] as usize]);
                     //assert_eq!(tape[tape[i + 1] as usize], 0)
                 }
                 i += 2;
-            },
-            [9, 9] => {
-                break 0
-            },
-            _ => panic!("Unrecognized opcode: {:?}" , opcode)
+            }
+            [9, 9] => break 0,
+            _ => panic!("Unrecognized opcode: {:?}", opcode),
         }
         //println!("{:?}", tape);
     }
 }
 
-
 #[aoc_generator(day5, part2)]
 fn p2_gen(input: &str) -> Vec<i32> {
     parse_program(input)
 }
-
 
 #[aoc(day5, part2)]
 fn solve_p2(tape: &Vec<i32>) -> i32 {
@@ -113,7 +107,7 @@ fn solve_p2(tape: &Vec<i32>) -> i32 {
 
         let opcode = if digits.len() == 2 {
             [digits[0], digits[1]]
-        } else if digits.len()  == 1 {
+        } else if digits.len() == 1 {
             [0, digits[0]]
         } else {
             [digits[digits.len() - 2], digits[digits.len() - 1]]
@@ -126,15 +120,14 @@ fn solve_p2(tape: &Vec<i32>) -> i32 {
                 let p1 = digits.get(digits.len() - 3).unwrap_or(&0);
                 let p2 = digits.get(digits.len() - 4).unwrap_or(&0);
 
-
                 let p1 = match p1 {
                     0 => tape[tape[i + 1] as usize],
-                    1 => tape[i+1],
+                    1 => tape[i + 1],
                     _ => unreachable!(),
                 };
                 let p2 = match p2 {
                     0 => tape[tape[i + 2] as usize],
-                    1 => tape[i+2],
+                    1 => tape[i + 2],
                     _ => unreachable!(),
                 };
 
@@ -146,15 +139,14 @@ fn solve_p2(tape: &Vec<i32>) -> i32 {
                 let p1 = digits.get(digits.len() - 3).unwrap_or(&0);
                 let p2 = digits.get(digits.len() - 4).unwrap_or(&0);
 
-
                 let p1 = match p1 {
                     0 => tape[tape[i + 1] as usize],
-                    1 => tape[i+1],
+                    1 => tape[i + 1],
                     _ => unreachable!(),
                 };
                 let p2 = match p2 {
                     0 => tape[tape[i + 2] as usize],
-                    1 => tape[i+2],
+                    1 => tape[i + 2],
                     _ => unreachable!(),
                 };
 
@@ -171,26 +163,25 @@ fn solve_p2(tape: &Vec<i32>) -> i32 {
             }
             [0, 4] => {
                 //if tape[i + 2] == 99 {
-                    //// This is the final output
-                    //break tape[tape[i + 1] as usize]
+                //// This is the final output
+                //break tape[tape[i + 1] as usize]
                 //} else {
-                break tape[tape[i + 1] as usize]
-                    ////assert_eq!(tape[tape[i + 1] as usize], 0)
+                break tape[tape[i + 1] as usize];
+                ////assert_eq!(tape[tape[i + 1] as usize], 0)
                 //}
-            },
+            }
             [0, 5] => {
                 let p1 = digits.get(digits.len() - 3).unwrap_or(&0);
                 let p2 = digits.get(digits.len() - 4).unwrap_or(&0);
 
-
                 let p1 = match p1 {
                     0 => tape[tape[i + 1] as usize],
-                    1 => tape[i+1],
+                    1 => tape[i + 1],
                     _ => unreachable!(),
                 };
                 let p2 = match p2 {
                     0 => tape[tape[i + 2] as usize],
-                    1 => tape[i+2],
+                    1 => tape[i + 2],
                     _ => unreachable!(),
                 };
 
@@ -199,20 +190,19 @@ fn solve_p2(tape: &Vec<i32>) -> i32 {
                 } else {
                     i += 3;
                 }
-            },
+            }
             [0, 6] => {
                 let p1 = digits.get(digits.len() - 3).unwrap_or(&0);
                 let p2 = digits.get(digits.len() - 4).unwrap_or(&0);
 
-
                 let p1 = match p1 {
                     0 => tape[tape[i + 1] as usize],
-                    1 => tape[i+1],
+                    1 => tape[i + 1],
                     _ => unreachable!(),
                 };
                 let p2 = match p2 {
                     0 => tape[tape[i + 2] as usize],
-                    1 => tape[i+2],
+                    1 => tape[i + 2],
                     _ => unreachable!(),
                 };
 
@@ -226,15 +216,14 @@ fn solve_p2(tape: &Vec<i32>) -> i32 {
                 let p1 = digits.get(digits.len() - 3).unwrap_or(&0);
                 let p2 = digits.get(digits.len() - 4).unwrap_or(&0);
 
-
                 let p1 = match p1 {
                     0 => tape[tape[i + 1] as usize],
-                    1 => tape[i+1],
+                    1 => tape[i + 1],
                     _ => unreachable!(),
                 };
                 let p2 = match p2 {
                     0 => tape[tape[i + 2] as usize],
-                    1 => tape[i+2],
+                    1 => tape[i + 2],
                     _ => unreachable!(),
                 };
 
@@ -251,15 +240,14 @@ fn solve_p2(tape: &Vec<i32>) -> i32 {
                 let p1 = digits.get(digits.len() - 3).unwrap_or(&0);
                 let p2 = digits.get(digits.len() - 4).unwrap_or(&0);
 
-
                 let p1 = match p1 {
                     0 => tape[tape[i + 1] as usize],
-                    1 => tape[i+1],
+                    1 => tape[i + 1],
                     _ => unreachable!(),
                 };
                 let p2 = match p2 {
                     0 => tape[tape[i + 2] as usize],
-                    1 => tape[i+2],
+                    1 => tape[i + 2],
                     _ => unreachable!(),
                 };
 
@@ -272,15 +260,12 @@ fn solve_p2(tape: &Vec<i32>) -> i32 {
                 }
                 i += 4;
             }
-            [9, 9] => {
-                break 0
-            },
-            _ => panic!("Unrecognized opcode: {:?}" , opcode)
+            [9, 9] => break 0,
+            _ => panic!("Unrecognized opcode: {:?}", opcode),
         }
         //println!("{:?}", tape);
     }
 }
-
 
 #[cfg(test)]
 mod tests {
@@ -288,6 +273,6 @@ mod tests {
 
     #[test]
     fn day5_sample1() {
-        println!("{:?}", solve_p1(&vec![1002,4,3,4,33]));
+        println!("{:?}", solve_p1(&vec![1002, 4, 3, 4, 33]));
     }
 }
