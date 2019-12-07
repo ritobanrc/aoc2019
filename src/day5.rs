@@ -2,7 +2,7 @@ use crate::day4::get_digits;
 use std::convert::TryInto;
 
 #[aoc_generator(day5, part1)]
-fn parse_program(input: &str) -> Vec<i32> {
+pub fn parse_program(input: &str) -> Vec<i32> {
     input
         .split(',')
         .map(|i| i.parse::<i32>().unwrap())
