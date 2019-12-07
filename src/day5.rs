@@ -15,7 +15,12 @@ fn solve_p1(tape: &Vec<i32>) -> i32 {
     let mut i = 0;
     loop {
         let instr: u64 = tape[i].try_into().expect("Negative Instruction is Invalid");
-        let digits = get_digits(instr);
+        let mut digits = get_digits(instr);
+
+        while digits.len() < 4 {
+            digits.insert(0, 0);
+        }
+
 
         let opcode = if digits.len() == 2 {
             [digits[0], digits[1]]
@@ -103,7 +108,12 @@ fn solve_p2(tape: &Vec<i32>) -> i32 {
     let mut i = 0;
     loop {
         let instr: u64 = tape[i].try_into().expect("Negative Instruction is Invalid");
-        let digits = get_digits(instr);
+        let mut digits = get_digits(instr);
+
+        while digits.len() < 4 {
+            digits.insert(0, 0);
+        }
+
 
         let opcode = if digits.len() == 2 {
             [digits[0], digits[1]]
