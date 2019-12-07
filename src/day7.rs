@@ -244,7 +244,6 @@ fn solve_p2(tape: &Vec<i32>) -> i32 {
             max_signal = output;
         }
 
-        println!("Seq: {:?} Gives {:?}", seq, output);
     }
 
     max_signal
