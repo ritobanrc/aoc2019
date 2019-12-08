@@ -21,7 +21,6 @@ fn solve_p1(tape: &Vec<i32>) -> i32 {
             digits.insert(0, 0);
         }
 
-
         let opcode = if digits.len() == 2 {
             [digits[0], digits[1]]
         } else if digits.len() == 1 {
@@ -76,7 +75,7 @@ fn solve_p1(tape: &Vec<i32>) -> i32 {
                 i += 4;
             }
             [0, 3] => {
-                let output = tape[i + 3] as usize;
+                let output = tape[i + 1] as usize;
                 tape[output] = 1; // Always submitting input 1
                 i += 2;
             }
@@ -114,7 +113,6 @@ fn solve_p2(tape: &Vec<i32>) -> i32 {
             digits.insert(0, 0);
         }
 
-
         let opcode = if digits.len() == 2 {
             [digits[0], digits[1]]
         } else if digits.len() == 1 {
@@ -167,7 +165,7 @@ fn solve_p2(tape: &Vec<i32>) -> i32 {
                 i += 4;
             }
             [0, 3] => {
-                let output = tape[i + 3] as usize;
+                let output = tape[i + 1] as usize;
                 tape[output] = 5; // Always submitting input 1
                 i += 2;
             }

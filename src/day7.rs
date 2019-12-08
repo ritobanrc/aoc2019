@@ -15,7 +15,7 @@ fn solve_p1(tape: &Vec<i32>) -> i32 {
         let mut output = 0;
         for phase in seq {
             let mut phase_passed = false;
-            output = intcode_computer(tape, || { 
+            output = intcode_computer(tape, || {
                 if phase_passed {
                     output
                 } else {
@@ -32,11 +32,12 @@ fn solve_p1(tape: &Vec<i32>) -> i32 {
     max_signal
 }
 
-
-fn intcode_computer<F>(tape: &Vec<i32>, mut get_input: F) -> i32 
-    where F: FnMut() -> i32 {
-    use std::convert::TryInto;
+fn intcode_computer<F>(tape: &Vec<i32>, mut get_input: F) -> i32
+where
+    F: FnMut() -> i32,
+{
     use crate::day4::get_digits;
+    use std::convert::TryInto;
     let mut tape = tape.clone();
     let mut i = 0;
     loop {
@@ -46,7 +47,6 @@ fn intcode_computer<F>(tape: &Vec<i32>, mut get_input: F) -> i32
         while digits.len() < 4 {
             digits.insert(0, 0);
         }
-
 
         let opcode = if digits.len() == 2 {
             [digits[0], digits[1]]
@@ -102,13 +102,11 @@ fn intcode_computer<F>(tape: &Vec<i32>, mut get_input: F) -> i32
                 i += 4;
             }
             [0, 3] => {
-                let output = tape[i + 3] as usize;
+                let output = tape[i + 1] as usize;
                 tape[output] = get_input();
                 i += 2;
             }
-            [0, 4] => {
-                return tape[tape[i + 1] as usize]
-            }
+            [0, 4] => return tape[tape[i + 1] as usize],
             [0, 5] => {
                 let p1 = digits.get(digits.len() - 3).unwrap_or(&0);
                 let p2 = digits.get(digits.len() - 4).unwrap_or(&0);
@@ -205,9 +203,6 @@ fn intcode_computer<F>(tape: &Vec<i32>, mut get_input: F) -> i32
     }
 }
 
-
-
-
 #[aoc_generator(day7, part2)]
 fn p2_generator(input: &str) -> Vec<i32> {
     parse_program(input)
@@ -235,11 +230,10 @@ fn solve_p2(tape: &Vec<i32>) -> i32 {
                     }
                 });
 
-
                 //println!("{:?}", state);
 
                 if state == -1 {
-                    break 'feedback
+                    break 'feedback;
                 }
 
                 output = state;
@@ -248,23 +242,23 @@ fn solve_p2(tape: &Vec<i32>) -> i32 {
         if output > max_signal {
             max_signal = output;
         }
-
     }
 
     max_signal
 }
 
-
 fn intcode_computer_p2<F>(tape: &mut Vec<i32>, i: &mut usize, mut get_input: F) -> i32
-    where F: FnMut() -> i32 {
-    use std::convert::TryInto;
+where
+    F: FnMut() -> i32,
+{
     use crate::day4::get_digits;
-
-
+    use std::convert::TryInto;
 
     //let mut tape = tape.clone();
     let output = loop {
-        let instr: u64 = tape[*i].try_into().expect("Negative Instruction is Invalid");
+        let instr: u64 = tape[*i]
+            .try_into()
+            .expect("Negative Instruction is Invalid");
         let mut digits = get_digits(instr);
 
         while digits.len() < 4 {
@@ -331,7 +325,7 @@ fn intcode_computer_p2<F>(tape: &mut Vec<i32>, i: &mut usize, mut get_input: F) 
             }
             [0, 4] => {
                 *i += 2;
-                break tape[tape[*i - 1] as usize]
+                break tape[tape[*i - 1] as usize];
             }
             [0, 5] => {
                 let p1 = digits.get(digits.len() - 3).unwrap_or(&0);
@@ -431,27 +425,31 @@ fn intcode_computer_p2<F>(tape: &mut Vec<i32>, i: &mut usize, mut get_input: F) 
     output
 }
 
-
 #[cfg(test)]
 mod tests {
     use super::*;
 
     #[test]
     fn day7_sample1() {
-        let tape = vec![3,26,1001,26,-4,26,3,27,1002,27,2,27,1,27,26,27,4,27,1001,28,-1,28,1005,28,6,99,0,0,5];
+        let tape = vec![
+            3, 26, 1001, 26, -4, 26, 3, 27, 1002, 27, 2, 27, 1, 27, 26, 27, 4, 27, 1001, 28, -1,
+            28, 1005, 28, 6, 99, 0, 0, 5,
+        ];
 
         let output = solve_p2(&tape);
         assert_eq!(output, 139629729);
     }
 
-
     #[test]
     fn day7_sample2() {
-        let tape = vec![3,52,1001,52,-5,52,3,53,1,52,56,54,1007,54,5,55,1005,55,26,1001,54, -5,54,1105,1,12,1,53,54,53,1008,54,0,55,1001,55,1,55,2,53,55,53,4, 53,1001,56,-1,56,1005,56,6,99,0,0,0,0,10];
+        let tape = vec![
+            3, 52, 1001, 52, -5, 52, 3, 53, 1, 52, 56, 54, 1007, 54, 5, 55, 1005, 55, 26, 1001, 54,
+            -5, 54, 1105, 1, 12, 1, 53, 54, 53, 1008, 54, 0, 55, 1001, 55, 1, 55, 2, 53, 55, 53, 4,
+            53, 1001, 56, -1, 56, 1005, 56, 6, 99, 0, 0, 0, 0, 10,
+        ];
         //let seq = vec![9, 7, 8, 5, 6];
 
         let output = solve_p2(&tape);
         assert_eq!(output, 18216);
-
     }
 }

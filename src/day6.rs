@@ -3,29 +3,32 @@ use std::collections::{HashMap, VecDeque};
 #[aoc_generator(day6, part1)]
 fn parse_orbits(input: &str) -> (Vec<(usize, usize)>, usize) {
     let mut satellites = Vec::new();
-    (input
-        .lines()
-        .map(|x| {
-            let mut iter = x.split(')');
-            let orbitee = iter.next().unwrap();
-            let orbiter = iter.next().unwrap();
-            let orbitee_idx = satellites
-                .iter()
-                .position(|x| *x == orbitee)
-                .unwrap_or_else(|| {
-                    satellites.push(orbitee);
-                    satellites.len() - 1
-                });
-            let orbiter_idx = satellites
-                .iter()
-                .position(|x| *x == orbiter)
-                .unwrap_or_else(|| {
-                    satellites.push(orbiter);
-                    satellites.len() - 1
-                });
-            (orbitee_idx, orbiter_idx)
-        })
-        .collect::<Vec<_>>(), satellites.len())
+    (
+        input
+            .lines()
+            .map(|x| {
+                let mut iter = x.split(')');
+                let orbitee = iter.next().unwrap();
+                let orbiter = iter.next().unwrap();
+                let orbitee_idx = satellites
+                    .iter()
+                    .position(|x| *x == orbitee)
+                    .unwrap_or_else(|| {
+                        satellites.push(orbitee);
+                        satellites.len() - 1
+                    });
+                let orbiter_idx = satellites
+                    .iter()
+                    .position(|x| *x == orbiter)
+                    .unwrap_or_else(|| {
+                        satellites.push(orbiter);
+                        satellites.len() - 1
+                    });
+                (orbitee_idx, orbiter_idx)
+            })
+            .collect::<Vec<_>>(),
+        satellites.len(),
+    )
 }
 
 #[aoc(day6, part1)]
@@ -39,10 +42,9 @@ fn solve_p1(orbits: &(Vec<(usize, usize)>, usize)) -> usize {
     for sat in 0..num_satellites {
         if orbits.iter().all(|(_orbitee, orbiter)| sat != *orbiter) {
             root = Some(sat);
-            break
+            break;
         }
     }
-
 
     let root = root.expect("Could not find root node");
 
@@ -64,7 +66,6 @@ fn solve_p1(orbits: &(Vec<(usize, usize)>, usize)) -> usize {
 }
 struct Part2Input {
     orbits: Vec<(usize, usize)>,
-    num_satellites: usize,
     you_idx: usize,
     san_idx: usize,
 }
@@ -103,21 +104,17 @@ fn parse_orbits_p2(input: &str) -> Part2Input {
             (orbitee_idx, orbiter_idx)
         })
         .collect::<Vec<_>>();
-    println!("Finished input");
+
     Part2Input {
         orbits,
-        num_satellites: satellites.len(),
-        you_idx, 
-        san_idx
+        you_idx,
+        san_idx,
     }
 }
 
-
 #[aoc(day6, part2)]
 fn solve_p2(input: &Part2Input) -> usize {
-    let num_satellites = input.num_satellites;
     let orbits = &input.orbits;
-
 
     let mut queue = VecDeque::new();
     let mut visited = HashMap::new();
@@ -126,15 +123,14 @@ fn solve_p2(input: &Part2Input) -> usize {
     while queue.len() > 0 {
         let node = queue.pop_front().unwrap();
         if node == input.san_idx {
-            break
+            break;
         }
         for (orbitee, orbiter) in orbits.iter() {
             if *orbitee == node && !visited.contains_key(orbiter) {
                 // This is a child of our current node
                 visited.insert(orbiter, node);
                 queue.push_back(*orbiter);
-            }
-            else if *orbiter == node && !visited.contains_key(orbitee) {
+            } else if *orbiter == node && !visited.contains_key(orbitee) {
                 // This is a child of our current node
                 visited.insert(orbitee, node);
                 queue.push_back(*orbitee);
@@ -147,7 +143,7 @@ fn solve_p2(input: &Part2Input) -> usize {
     loop {
         current = visited[&current];
         if current == input.you_idx {
-            break
+            break;
         }
         total_count += 1;
     }
@@ -155,7 +151,7 @@ fn solve_p2(input: &Part2Input) -> usize {
 }
 
 #[cfg(test)]
-mod tests{
+mod tests {
     use super::*;
 
     #[test]
