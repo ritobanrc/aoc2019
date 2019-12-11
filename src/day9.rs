@@ -11,7 +11,7 @@ fn solve_p1(tape: &Vec<i64>) -> i64 {
     const TAPE_SIZE: usize = 10_000;
     let mut tape = tape.clone();
     tape.append(&mut vec![0; TAPE_SIZE]);
-    intcode_computer(&mut tape, &mut 0, || 1)
+    intcode_computer(&mut tape, &mut 0, &mut 0, || 1)
 }
 
 #[aoc_generator(day9, part2)]
@@ -24,17 +24,15 @@ fn solve_p2(tape: &Vec<i64>) -> i64 {
     const TAPE_SIZE: usize = 10_000;
     let mut tape = tape.clone();
     tape.append(&mut vec![0; TAPE_SIZE]);
-    intcode_computer(&mut tape, &mut 0, || 2)
+    intcode_computer(&mut tape, &mut 0, &mut 0, || 2)
 }
 
-fn intcode_computer<F>(tape: &mut Vec<i64>, i: &mut usize, mut get_input: F) -> i64
+pub fn intcode_computer<F>(tape: &mut Vec<i64>, i: &mut usize, relative_base: &mut i64, mut get_input: F) -> i64
 where
     F: FnMut() -> i64,
 {
     use crate::day4::get_digits;
     use std::convert::TryInto;
-
-    let mut relative_base = 0;
 
     //let mut tape = tape.clone();
     let output = loop {
@@ -54,7 +52,7 @@ where
             match parameter_mode {
                 0 => tape[tape[*i + idx] as usize],
                 1 => tape[*i + idx],
-                2 => tape[(relative_base + tape[*i + idx]) as usize],
+                2 => tape[(*relative_base + tape[*i + idx]) as usize],
                 e => panic!("Unrecognized parameter_mode: {:?}", e),
             }
         };
@@ -68,12 +66,13 @@ where
                 }
                 1 => panic!("Cannot write to immediate mode param"),
                 2 => {
-                    let output = (relative_base + tape[*i + idx]) as usize;
+                    let output = (*relative_base + tape[*i + idx]) as usize;
                     tape[output] = data;
                 }
                 e => panic!("Unrecognized parameter_mode: {:?}", e),
             }
         };
+
 
         match opcode {
             [0, 1] => {
@@ -144,7 +143,7 @@ where
             [0, 9] => {
                 let p1 = read_param(1);
 
-                relative_base += p1;
+                *relative_base += p1;
 
                 *i += 2
             }
@@ -167,8 +166,9 @@ mod tests {
         ];
         tape.append(&mut vec![0; 10_000]);
         let mut i = 0;
+        let mut relative_base = 0;
         loop {
-            let output = intcode_computer(&mut tape, &mut i, || 0);
+            let output = intcode_computer(&mut tape, &mut i, &mut relative_base, || 0);
             if output == -1 {
                 return;
             } else {
@@ -182,7 +182,8 @@ mod tests {
         let mut tape = vec![1102, 34915192, 34915192, 7, 4, 7, 99, 0];
         tape.append(&mut vec![0; 10_000]);
         let mut i = 0;
-        let output = intcode_computer(&mut tape, &mut i, || 0);
+        let mut relative_base = 0;
+        let output = intcode_computer(&mut tape, &mut i, &mut relative_base, || 0);
         println!("{:?}", output);
     }
 
@@ -191,7 +192,8 @@ mod tests {
         let mut tape = vec![104, 1125899906842624, 99];
         tape.append(&mut vec![0; 10_000]);
         let mut i = 0;
-        let output = intcode_computer(&mut tape, &mut i, || 0);
+        let mut relative_base = 0;
+        let output = intcode_computer(&mut tape, &mut i, &mut relative_base, || 0);
         println!("{:?}", output);
         assert_eq!(output, tape[1]);
     }
