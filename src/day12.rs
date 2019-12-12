@@ -1,13 +1,15 @@
 use itertools::Itertools;
+use num::Integer;
+use std::collections::HashSet;
 use regex::Regex;
 
-#[derive(Debug, Clone)]
+#[derive(Debug, Clone, Hash, PartialEq, Eq)]
 struct Moon {
     position: [i32; 3],
     velocity: [i32; 3],
 }
 
-#[aoc_generator(day12, part1)]
+#[aoc_generator(day12)]
 fn load_moons(input: &str) -> Vec<Moon> {
     let re = Regex::new(r"<x=(-?\d+), y=(-?\d+), z=(-?\d+)>").unwrap();
 
@@ -55,4 +57,43 @@ fn solve_p1(moons: &Vec<Moon>) -> i32 {
 
         pot * kin
     }).sum()
+}
+
+#[aoc(day12, part2)]
+fn solve_p2_good(moons: &Vec<Moon>) -> usize {
+    let mut past = HashSet::new();
+
+    let mut counters = [0, 0, 0];
+
+    for i in 0..3 {
+        let mut positions: Vec<i32> = moons.iter().map(|moon| { moon.position[i] }).collect();
+        let mut velocities: Vec<i32> = moons.iter().map(|moon| { moon.velocity[i] }).collect();
+
+        let mut counter = 0;
+
+
+        while !past.contains(&(positions.clone(), velocities.clone())) {
+            past.insert((positions.clone(), velocities.clone()));
+            for pair in positions.iter().enumerate().combinations(2) {
+                if pair[0].1 > pair[1].1 {
+                    velocities[pair[0].0] -= 1;
+                    velocities[pair[1].0] += 1;
+                } else if pair[0].1 < pair[1].1 {
+                    velocities[pair[0].0] += 1;
+                    velocities[pair[1].0] -= 1;
+                } 
+            }
+
+            for (pos, vel) in positions.iter_mut().zip(&velocities) {
+                *pos += *vel
+            }
+
+            counter += 1;
+        }
+
+        println!("Takes {:?} to repeat", counter);
+        counters[i] = counter;
+    }
+
+    counters[0].lcm(&counters[1]).lcm(&counters[2])
 }
