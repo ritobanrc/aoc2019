@@ -91,7 +91,7 @@ fn solve_p2_good(moons: &Vec<Moon>) -> usize {
             counter += 1;
         }
 
-        println!("Takes {:?} to repeat", counter);
+        //println!("Takes {:?} to repeat", counter);
         counters[i] = counter;
     }
 
