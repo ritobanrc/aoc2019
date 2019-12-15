@@ -1,4 +1,4 @@
-use crate::day9::{parse_program, intcode_computer};
+use crate::day9::{intcode_computer, parse_program};
 use std::collections::HashMap;
 
 #[aoc_generator(day13)]
@@ -17,22 +17,20 @@ fn solve_p1(tape: &Vec<i64>) -> usize {
     let mut i = 0;
     let mut relative_base = 0;
     loop {
-        let x = intcode_computer(&mut tape, &mut i, &mut relative_base, || { 0 });
+        let x = intcode_computer(&mut tape, &mut i, &mut relative_base, || 0);
 
         if x == -1 {
-            break
+            break;
         }
 
-        let y = intcode_computer(&mut tape, &mut i, &mut relative_base, || { 0 });
-        let tile_type = intcode_computer(&mut tape, &mut i, &mut relative_base, || { 0 });
+        let y = intcode_computer(&mut tape, &mut i, &mut relative_base, || 0);
+        let tile_type = intcode_computer(&mut tape, &mut i, &mut relative_base, || 0);
 
         screen.entry(tile_type).or_insert(Vec::new()).push((x, y));
     }
 
     screen.get(&2).unwrap().len()
 }
-
-
 
 #[aoc(day13, part2)]
 fn solve_p2(tape: &Vec<i64>) -> i64 {
@@ -57,8 +55,14 @@ fn solve_p2(tape: &Vec<i64>) -> i64 {
                     0 => " ",
                     1 => "█",
                     2 => "▣",
-                    3 => { paddle_pos = x; "⊔" },
-                    4 => { ball_pos = x; "●" },
+                    3 => {
+                        paddle_pos = x;
+                        "⊔"
+                    }
+                    4 => {
+                        ball_pos = x;
+                        "●"
+                    }
                     _ => panic!("Unrecognized tiletype"),
                 };
                 //print!("{}", c);
@@ -76,21 +80,19 @@ fn solve_p2(tape: &Vec<i64>) -> i64 {
     loop {
         let x = intcode_computer(&mut tape, &mut i, &mut relative_base, || get_move(&screen));
         let y = intcode_computer(&mut tape, &mut i, &mut relative_base, || get_move(&screen));
-        let tile_type = intcode_computer(&mut tape, &mut i, &mut relative_base, || get_move(&screen));
+        let tile_type =
+            intcode_computer(&mut tape, &mut i, &mut relative_base, || get_move(&screen));
 
         if x == -1 && y == 0 {
             answer = tile_type;
         }
 
         if tile_type == -1 {
-            break
+            break;
         }
 
         screen.insert((x, y), tile_type);
-
-
     }
 
     answer
 }
-

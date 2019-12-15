@@ -1,22 +1,22 @@
+use std::collections::{BTreeMap, HashSet};
 use std::ops::Index;
-use std::collections::{HashSet, BTreeMap};
 
 struct AsteroidMap {
     map: Vec<MapValue>,
     width: usize,
-    _height: usize
+    _height: usize,
 }
 
 struct AsteroidMapIter<'a> {
     map: &'a AsteroidMap,
-    index: usize
+    index: usize,
 }
 
 impl AsteroidMap {
     fn iter(&self) -> AsteroidMapIter {
         AsteroidMapIter {
             map: self,
-            index: 0
+            index: 0,
         }
     }
 }
@@ -50,15 +50,18 @@ enum MapValue {
 #[aoc_generator(day10, part1)]
 fn parse_asteroid_map(input: &str) -> AsteroidMap {
     AsteroidMap {
-        map: input.lines().flat_map(|line| {
-            line.chars().map(|c| {
-                match c {
-                    '.' => MapValue::Empty,
-                    '#' => MapValue::Asteroid,
-                    e => panic!("Unrecognized map value {:?}", e)
-                }
-            }).collect::<Vec<_>>()
-        }).collect(),
+        map: input
+            .lines()
+            .flat_map(|line| {
+                line.chars()
+                    .map(|c| match c {
+                        '.' => MapValue::Empty,
+                        '#' => MapValue::Asteroid,
+                        e => panic!("Unrecognized map value {:?}", e),
+                    })
+                    .collect::<Vec<_>>()
+            })
+            .collect(),
         width: input.lines().next().unwrap().len(),
         _height: input.lines().count(),
     }
@@ -70,15 +73,15 @@ fn solve_p1(map: &AsteroidMap) -> usize {
 
     for (station_x, station_y, station_value) in map.iter() {
         if *station_value == MapValue::Empty {
-            continue
+            continue;
         }
         let mut angles = HashSet::new();
         'a: for (other_x, other_y, other_value) in map.iter() {
             if *other_value == MapValue::Empty {
-                continue 'a
+                continue 'a;
             }
             if station_x == other_x && station_y == other_y {
-                continue
+                continue;
             }
 
             let dx = other_x as isize - station_x as isize;
@@ -100,21 +103,21 @@ fn p2_generator(input: &str) -> AsteroidMap {
     parse_asteroid_map(input)
 }
 
-#[aoc(day10, part2)] 
+#[aoc(day10, part2)]
 fn solve_p2(map: &AsteroidMap) -> usize {
     let mut best_angles = BTreeMap::new();
 
     for (station_x, station_y, station_value) in map.iter() {
         if *station_value == MapValue::Empty {
-            continue
+            continue;
         }
         let mut angles = BTreeMap::new();
         'a: for (other_x, other_y, other_value) in map.iter() {
             if *other_value == MapValue::Empty {
-                continue 'a
+                continue 'a;
             }
             if station_x == other_x && station_y == other_y {
-                continue
+                continue;
             }
 
             let dx = other_x as isize - station_x as isize;
@@ -125,7 +128,10 @@ fn solve_p2(map: &AsteroidMap) -> usize {
 
             // We want to start at 90 degrees, and go clockwise, not counterclockwise
 
-            angles.entry(angle).or_insert(Vec::new()).push((other_x, other_y));
+            angles
+                .entry(angle)
+                .or_insert(Vec::new())
+                .push((other_x, other_y));
         }
 
         if angles.len() > best_angles.len() {
@@ -138,7 +144,7 @@ fn solve_p2(map: &AsteroidMap) -> usize {
     let mut vec = best_angles.into_iter().collect::<Vec<_>>();
 
     // Start at -90 degrees
-    let mut i = vec.iter().position(|(angle, _)| { *angle >= -900 }).unwrap();
+    let mut i = vec.iter().position(|(angle, _)| *angle >= -900).unwrap();
     // We already got t
     while counter < 199 {
         vec[i].1.remove(0);
@@ -169,7 +175,8 @@ mod tests {
 .##.#..###
 ##...#..#.
 .#....####
-".trim();
+"
+        .trim();
         assert_eq!(solve_p1(&parse_asteroid_map(input)), 33);
     }
 
@@ -188,5 +195,4 @@ mod tests {
 ";
         assert_eq!(solve_p1(&parse_asteroid_map(input)), 35);
     }
-
 }

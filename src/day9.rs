@@ -27,7 +27,12 @@ fn solve_p2(tape: &Vec<i64>) -> i64 {
     intcode_computer(&mut tape, &mut 0, &mut 0, || 2)
 }
 
-pub fn intcode_computer<F>(tape: &mut Vec<i64>, i: &mut usize, relative_base: &mut i64, mut get_input: F) -> i64
+pub fn intcode_computer<F>(
+    tape: &mut Vec<i64>,
+    i: &mut usize,
+    relative_base: &mut i64,
+    mut get_input: F,
+) -> i64
 where
     F: FnMut() -> i64,
 {
@@ -72,7 +77,6 @@ where
                 e => panic!("Unrecognized parameter_mode: {:?}", e),
             }
         };
-
 
         match opcode {
             [0, 1] => {

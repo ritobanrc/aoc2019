@@ -1,4 +1,4 @@
-use crate::day9::{parse_program, intcode_computer};
+use crate::day9::{intcode_computer, parse_program};
 use std::collections::HashMap;
 
 #[aoc_generator(day11, part1)]
@@ -6,9 +6,11 @@ fn p1_generator(input: &str) -> Vec<i64> {
     parse_program(input)
 }
 
-
 enum Direction {
-    Up, Down, Left, Right
+    Up,
+    Down,
+    Left,
+    Right,
 }
 
 impl Direction {
@@ -30,7 +32,6 @@ impl Direction {
         }
     }
 
-
     fn dx(&self) -> i64 {
         match *self {
             Direction::Up => 0,
@@ -40,7 +41,6 @@ impl Direction {
         }
     }
 
-
     fn dy(&self) -> i64 {
         match *self {
             Direction::Up => -1,
@@ -49,12 +49,12 @@ impl Direction {
             Direction::Right => 0,
         }
     }
-
 }
 
 #[derive(Debug, Clone, Copy)]
 enum Color {
-    Black, White
+    Black,
+    White,
 }
 
 impl Into<i64> for Color {
@@ -96,12 +96,12 @@ fn solve_p1(tape: &Vec<i64>) -> usize {
         });
 
         if paint == -1 {
-            break
+            break;
         }
 
         panels.insert((robot_x, robot_y), paint.into());
 
-        let dir = intcode_computer(&mut tape, &mut i, &mut relative_base, || { 0 });
+        let dir = intcode_computer(&mut tape, &mut i, &mut relative_base, || 0);
 
         match dir {
             0 => robot_dir = robot_dir.rotate_left(),
@@ -116,13 +116,10 @@ fn solve_p1(tape: &Vec<i64>) -> usize {
     panels.len()
 }
 
-
 #[aoc_generator(day11, part2)]
 fn p2_generator(input: &str) -> Vec<i64> {
     parse_program(input)
 }
-
-
 
 #[aoc(day11, part2)]
 fn solve_p2(tape: &Vec<i64>) -> usize {
@@ -147,12 +144,12 @@ fn solve_p2(tape: &Vec<i64>) -> usize {
         });
 
         if paint == -1 {
-            break
+            break;
         }
 
         panels.insert((robot_x, robot_y), paint.into());
 
-        let dir = intcode_computer(&mut tape, &mut i, &mut relative_base, || { 1 });
+        let dir = intcode_computer(&mut tape, &mut i, &mut relative_base, || 1);
 
         match dir {
             0 => robot_dir = robot_dir.rotate_left(),
@@ -167,10 +164,13 @@ fn solve_p2(tape: &Vec<i64>) -> usize {
     for y in 0..10 {
         for x in 0..50 {
             let color = (*panels.get(&(x, y)).unwrap_or(&Color::Black)).into();
-            print!("{}", match color {
-                Color::White => "■",
-                Color::Black => " ",
-            })
+            print!(
+                "{}",
+                match color {
+                    Color::White => "■",
+                    Color::Black => " ",
+                }
+            )
         }
         println!("");
     }
