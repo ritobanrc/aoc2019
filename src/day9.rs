@@ -51,9 +51,13 @@ where
         let read_param = |idx| {
             let parameter_mode = digits.get(digits.len() - 2 - idx).unwrap();
             match parameter_mode {
-                0 => *tape.get(*tape.get(*i + idx).unwrap_or(&0) as usize).unwrap_or(&0),
+                0 => *tape
+                    .get(*tape.get(*i + idx).unwrap_or(&0) as usize)
+                    .unwrap_or(&0),
                 1 => *tape.get(*i + idx).unwrap_or(&0),
-                2 => *tape.get((*relative_base + *tape.get(*i + idx).unwrap_or(&0)) as usize).unwrap_or(&0),
+                2 => *tape
+                    .get((*relative_base + *tape.get(*i + idx).unwrap_or(&0)) as usize)
+                    .unwrap_or(&0),
                 e => panic!("Unrecognized parameter_mode: {:?}", e),
             }
         };

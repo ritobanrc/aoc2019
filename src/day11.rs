@@ -6,7 +6,8 @@ fn p1_generator(input: &str) -> Vec<i64> {
     parse_program(input)
 }
 
-enum Direction {
+#[derive(Debug)]
+pub enum Direction {
     Up,
     Down,
     Left,
@@ -14,7 +15,7 @@ enum Direction {
 }
 
 impl Direction {
-    fn rotate_right(&self) -> Self {
+    pub fn rotate_right(&self) -> Self {
         match *self {
             Direction::Up => Direction::Right,
             Direction::Right => Direction::Down,
@@ -23,7 +24,7 @@ impl Direction {
         }
     }
 
-    fn rotate_left(&self) -> Self {
+    pub fn rotate_left(&self) -> Self {
         match *self {
             Direction::Up => Direction::Left,
             Direction::Left => Direction::Down,
@@ -32,7 +33,7 @@ impl Direction {
         }
     }
 
-    fn dx(&self) -> i64 {
+    pub fn dx(&self) -> i64 {
         match *self {
             Direction::Up => 0,
             Direction::Left => -1,
@@ -41,7 +42,7 @@ impl Direction {
         }
     }
 
-    fn dy(&self) -> i64 {
+    pub fn dy(&self) -> i64 {
         match *self {
             Direction::Up => -1,
             Direction::Left => 0,
