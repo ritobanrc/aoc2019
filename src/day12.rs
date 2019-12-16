@@ -26,11 +26,11 @@ fn load_moons(input: &str) -> Vec<Moon> {
 }
 
 #[aoc(day12, part1)]
-fn solve_p1(moons: &Vec<Moon>) -> i32 {
+fn solve_p1(moons: &[Moon]) -> i32 {
     // Repeat for 1000 steps
-    let mut moons = moons.clone();
+    let mut moons = moons.to_owned();
     for _ in 0..1000 {
-        let mut next_moons = moons.clone();
+        let mut next_moons = moons.to_owned();
         for pair in moons.iter().enumerate().combinations(2) {
             for (i, (a, b)) in pair[0]
                 .1
@@ -71,16 +71,14 @@ fn solve_p1(moons: &Vec<Moon>) -> i32 {
 }
 
 #[aoc(day12, part2)]
-fn solve_p2_good(moons: &Vec<Moon>) -> usize {
+fn solve_p2_good(moons: &[Moon]) -> usize {
     let mut past = HashSet::new();
 
     let mut counters = [0, 0, 0];
 
-    for i in 0..3 {
+    for (i, counter) in counters.iter_mut().enumerate() {
         let mut positions: Vec<i32> = moons.iter().map(|moon| moon.position[i]).collect();
         let mut velocities: Vec<i32> = moons.iter().map(|moon| moon.velocity[i]).collect();
-
-        let mut counter = 0;
 
         while !past.contains(&(positions.clone(), velocities.clone())) {
             past.insert((positions.clone(), velocities.clone()));
@@ -98,11 +96,8 @@ fn solve_p2_good(moons: &Vec<Moon>) -> usize {
                 *pos += *vel
             }
 
-            counter += 1;
+            *counter += 1;
         }
-
-        //println!("Takes {:?} to repeat", counter);
-        counters[i] = counter;
     }
 
     counters[0].lcm(&counters[1]).lcm(&counters[2])

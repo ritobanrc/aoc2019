@@ -11,13 +11,13 @@ fn parse_images(input: &str) -> Vec<Vec<u8>> {
 }
 
 #[aoc(day8, part1)]
-fn solve_p1(input: &Vec<Vec<u8>>) -> usize {
+fn solve_p1(input: &[Vec<u8>]) -> usize {
     let layer = input
         .iter()
-        .min_by_key(|v| v.iter().filter(|pix| **pix == 0).count())
+        .min_by_key(|v| bytecount::count(v, 0))
         .unwrap();
 
-    layer.iter().filter(|pix| **pix == 1).count() * layer.iter().filter(|pix| **pix == 2).count()
+    bytecount::count(layer, 1) * bytecount::count(layer, 2)
 }
 
 #[aoc_generator(day8, part2)]
@@ -26,7 +26,7 @@ fn parse_p2(input: &str) -> Vec<Vec<u8>> {
 }
 
 #[aoc(day8, part2)]
-fn solve_p2(input: &Vec<Vec<u8>>) -> usize {
+fn solve_p2(input: &[Vec<u8>]) -> usize {
     for y in 0..HEIGHT {
         for x in 0..WIDTH {
             let idx = y * WIDTH + x;
@@ -53,7 +53,7 @@ fn solve_p2(input: &Vec<Vec<u8>>) -> usize {
                 }
             );
         }
-        println!("");
+        println!();
     }
     0
 }

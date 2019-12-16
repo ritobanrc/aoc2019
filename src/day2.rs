@@ -27,8 +27,8 @@ fn run_tape(mut tape: Vec<usize>) -> Vec<usize> {
 }
 
 #[aoc(day2, part1)]
-fn solve_p1(tape: &Vec<usize>) -> usize {
-    let mut tape = tape.clone();
+fn solve_p1(tape: &[usize]) -> usize {
+    let mut tape = tape.to_owned();
     tape[1] = 12;
     tape[2] = 2;
     run_tape(tape)[0]
@@ -40,13 +40,13 @@ fn p2_generator(input: &str) -> Vec<usize> {
 }
 
 #[aoc(day2, part2)]
-fn solve_p2(tape: &Vec<usize>) -> usize {
+fn solve_p2(tape: &[usize]) -> usize {
     for noun in 1..99 {
         for verb in 1..99 {
-            let mut tape = tape.clone();
+            let mut tape = tape.to_owned();
             tape[1] = noun;
             tape[2] = verb;
-            if run_tape(tape)[0] == 19690720 {
+            if run_tape(tape)[0] == 19_690_720 {
                 return noun * 100 + verb;
             }
         }

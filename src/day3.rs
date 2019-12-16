@@ -96,13 +96,13 @@ fn solve_p2(wires: &[Vec<Step>; 2]) -> usize {
     int.0
 }
 
-fn points_from_steps(wire: &Vec<Step>) -> (HashSet<[i32; 2]>, Vec<[i32; 2]>) {
+fn points_from_steps(wire: &[Step]) -> (HashSet<[i32; 2]>, Vec<[i32; 2]>) {
     use std::iter::FromIterator;
     let path = path_from_steps(wire);
     (HashSet::from_iter(path.clone().into_iter()), path)
 }
 
-fn path_from_steps(wire: &Vec<Step>) -> Vec<[i32; 2]> {
+fn path_from_steps(wire: &[Step]) -> Vec<[i32; 2]> {
     let mut pos = [0, 0];
     let mut wire_points = Vec::new();
 

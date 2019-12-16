@@ -78,14 +78,14 @@ impl From<i64> for Color {
 }
 
 #[aoc(day11, part1)]
-fn solve_p1(tape: &Vec<i64>) -> usize {
+fn solve_p1(tape: &[i64]) -> usize {
     let mut robot_x = 0i64;
     let mut robot_y = 0i64;
     let mut robot_dir = Direction::Up;
 
     let mut panels: HashMap<(i64, i64), Color> = HashMap::new();
 
-    let mut tape = tape.clone();
+    let mut tape = tape.to_owned();
 
     let mut i = 0;
     let mut relative_base = 0;
@@ -121,7 +121,7 @@ fn p2_generator(input: &str) -> Vec<i64> {
 }
 
 #[aoc(day11, part2)]
-fn solve_p2(tape: &Vec<i64>) -> usize {
+fn solve_p2(tape: &[i64]) -> usize {
     let mut robot_x = 0i64;
     let mut robot_y = 0i64;
     let mut robot_dir = Direction::Up;
@@ -130,7 +130,7 @@ fn solve_p2(tape: &Vec<i64>) -> usize {
 
     panels.insert((robot_x, robot_y), Color::White);
 
-    let mut tape = tape.clone();
+    let mut tape = tape.to_owned();
 
     let mut i = 0;
     let mut relative_base = 0;
@@ -160,7 +160,7 @@ fn solve_p2(tape: &Vec<i64>) -> usize {
 
     for y in 0..10 {
         for x in 0..50 {
-            let color = (*panels.get(&(x, y)).unwrap_or(&Color::Black)).into();
+            let color = *panels.get(&(x, y)).unwrap_or(&Color::Black);
             print!(
                 "{}",
                 match color {
@@ -169,7 +169,7 @@ fn solve_p2(tape: &Vec<i64>) -> usize {
                 }
             )
         }
-        println!("");
+        println!();
     }
     0
 }

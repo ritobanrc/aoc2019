@@ -51,7 +51,7 @@ fn solve_p1(orbits: &(Vec<(usize, usize)>, usize)) -> usize {
     let mut stack = Vec::new();
     stack.push((root, 0));
     let mut total_count = 0;
-    while stack.len() > 0 {
+    while !stack.is_empty() {
         let (node, depth) = stack.pop().unwrap();
         for (orbitee, orbiter) in orbits.iter() {
             if *orbitee == node {
@@ -120,7 +120,7 @@ fn solve_p2(input: &Part2Input) -> usize {
     let mut visited = HashMap::new();
     queue.push_back(input.you_idx);
 
-    while queue.len() > 0 {
+    while !queue.is_empty() {
         let node = queue.pop_front().unwrap();
         if node == input.san_idx {
             break;

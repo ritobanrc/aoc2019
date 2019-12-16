@@ -22,7 +22,7 @@ fn parse_reactions(input: &str) -> Vec<Reaction> {
                 rxn.product = (String::from(line[i + 2]), line[i + 1].parse().unwrap());
                 break;
             }
-            let reactant = line[i + 1].trim_end_matches(",");
+            let reactant = line[i + 1].trim_end_matches(',');
             rxn.reactants
                 .push((String::from(reactant), line[i].parse().unwrap()));
             i += 2;
@@ -34,7 +34,7 @@ fn parse_reactions(input: &str) -> Vec<Reaction> {
     rxns
 }
 
-fn ore_for_fuel(rxns: &Vec<Reaction>, fuel: u64) -> u64 {
+fn ore_for_fuel(rxns: &[Reaction], fuel: u64) -> u64 {
     let mut need = HashMap::new();
 
     let mut excess: HashMap<String, u64> = HashMap::new();
@@ -43,7 +43,7 @@ fn ore_for_fuel(rxns: &Vec<Reaction>, fuel: u64) -> u64 {
 
     let mut ore = 0;
 
-    while need.len() > 0 {
+    while !need.is_empty() {
         //println!("Need {:?}", need);
         //println!("Excess {:?}", excess);
         let product = need.keys().next().unwrap().clone();
@@ -88,16 +88,16 @@ fn ore_for_fuel(rxns: &Vec<Reaction>, fuel: u64) -> u64 {
         }
     }
 
-    return ore;
+    ore
 }
 
 #[aoc(day14, part1)]
-fn solve_p1(rxns: &Vec<Reaction>) -> u64 {
+fn solve_p1(rxns: &[Reaction]) -> u64 {
     ore_for_fuel(rxns, 1)
 }
 
 #[aoc(day14, part2)]
-fn solve_p2(rxns: &Vec<Reaction>) -> u64 {
+fn solve_p2(rxns: &[Reaction]) -> u64 {
     let mut lower = 1; // we can definately produce 1 fuel
     let mut upper = 1_000_000_000_000; // random big number
 

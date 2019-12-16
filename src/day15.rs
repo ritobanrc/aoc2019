@@ -38,14 +38,16 @@ enum TileType {
     Robot,
 }
 
-fn intcode_search(
-    tape: &Vec<i64>,
-) -> (
+struct SeachResult(
     HashMap<(i64, i64), TileType>,
     HashMap<(i64, i64), (i64, i64)>,
     (i64, i64),
-) {
-    let mut tape = tape.clone();
+);
+
+fn intcode_search(
+    tape: &[i64],
+) -> SeachResult {
+    let mut tape = tape.to_owned();
     let mut i = 0;
     let mut rb = 0;
 
@@ -57,7 +59,7 @@ fn intcode_search(
 
     map.insert(current, TileType::Robot);
 
-    'a: loop {
+    loop {
         let mut moved = false;
 
         for dir in 1..=4 {
@@ -93,7 +95,7 @@ fn intcode_search(
         }
 
         // if we didn't move, go back to the parent
-        if moved == false {
+        if !moved {
             let back = parents.get(&current).unwrap();
 
             let dx = back.0 - current.0;
@@ -127,12 +129,12 @@ fn intcode_search(
         }
     }
 
-    (map, parents, goal)
+    SeachResult(map, parents, goal)
 }
 
 #[aoc(day15, part1)]
-fn solve_p1(tape: &Vec<i64>) -> usize {
-    let (map, parents, goal) = intcode_search(tape);
+fn solve_p1(tape: &[i64]) -> usize {
+    let SeachResult(map, parents, goal) = intcode_search(tape);
 
     for y in -21..20 {
         for x in -30..25 {
@@ -151,7 +153,7 @@ fn solve_p1(tape: &Vec<i64>) -> usize {
                 )
             }
         }
-        println!("");
+        println!();
     }
 
     let mut current = goal;
@@ -165,8 +167,8 @@ fn solve_p1(tape: &Vec<i64>) -> usize {
 }
 
 #[aoc(day15, part2)]
-fn solve_p2(tape: &Vec<i64>) -> usize {
-    let (map, _parents, oxygen) = intcode_search(tape);
+fn solve_p2(tape: &[i64]) -> usize {
+    let SeachResult(map, _parents, oxygen) = intcode_search(tape);
 
     let mut max_depth = 0;
     let mut queue = VecDeque::new();

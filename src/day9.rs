@@ -7,8 +7,8 @@ pub fn parse_program(input: &str) -> Vec<i64> {
 }
 
 #[aoc(day9, part1)]
-fn solve_p1(tape: &Vec<i64>) -> i64 {
-    let mut tape = tape.clone();
+fn solve_p1(tape: &[i64]) -> i64 {
+    let mut tape = tape.to_owned();
     intcode_computer(&mut tape, &mut 0, &mut 0, || 1)
 }
 
@@ -18,8 +18,8 @@ fn p2_generator(input: &str) -> Vec<i64> {
 }
 
 #[aoc(day9, part2)]
-fn solve_p2(tape: &Vec<i64>) -> i64 {
-    let mut tape = tape.clone();
+fn solve_p2(tape: &[i64]) -> i64 {
+    let mut tape = tape.to_owned();
     intcode_computer(&mut tape, &mut 0, &mut 0, || 2)
 }
 
@@ -36,7 +36,7 @@ where
     use std::convert::TryInto;
 
     //let mut tape = tape.clone();
-    let output = loop {
+    loop {
         let instr: u64 = tape[*i]
             .try_into()
             .expect("Negative Instruction is Invalid");
@@ -160,9 +160,7 @@ where
             [9, 9] => break -1,
             _ => panic!("Unrecognized opcode: {:?}", opcode),
         };
-    };
-
-    output
+    }
 }
 
 #[cfg(test)]

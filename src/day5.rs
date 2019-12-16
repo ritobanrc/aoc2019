@@ -10,8 +10,8 @@ pub fn parse_program(input: &str) -> Vec<i32> {
 }
 
 #[aoc(day5, part1)]
-fn solve_p1(tape: &Vec<i32>) -> i32 {
-    let mut tape = tape.clone();
+fn solve_p1(tape: &[i32]) -> i32 {
+    let mut tape = tape.to_owned();
     let mut i = 0;
     loop {
         let instr: u64 = tape[i].try_into().expect("Negative Instruction is Invalid");
@@ -102,8 +102,8 @@ fn p2_gen(input: &str) -> Vec<i32> {
 }
 
 #[aoc(day5, part2)]
-fn solve_p2(tape: &Vec<i32>) -> i32 {
-    let mut tape = tape.clone();
+fn solve_p2(tape: &[i32]) -> i32 {
+    let mut tape = tape.to_owned();
     let mut i = 0;
     loop {
         let instr: u64 = tape[i].try_into().expect("Negative Instruction is Invalid");

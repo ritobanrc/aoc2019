@@ -130,7 +130,7 @@ fn solve_p2(map: &AsteroidMap) -> usize {
 
             angles
                 .entry(angle)
-                .or_insert(Vec::new())
+                .or_insert_with(Vec::new)
                 .push((other_x, other_y));
         }
 

@@ -7,7 +7,7 @@ fn p1_generator(input: &str) -> Vec<i32> {
 }
 
 #[aoc(day7, part1)]
-fn solve_p1(tape: &Vec<i32>) -> i32 {
+fn solve_p1(tape: &[i32]) -> i32 {
     let sequenecs = (0..=4).permutations(5);
 
     let mut max_signal = 0;
@@ -32,13 +32,13 @@ fn solve_p1(tape: &Vec<i32>) -> i32 {
     max_signal
 }
 
-fn intcode_computer<F>(tape: &Vec<i32>, mut get_input: F) -> i32
+fn intcode_computer<F>(tape: &[i32], mut get_input: F) -> i32
 where
     F: FnMut() -> i32,
 {
     use crate::day4::get_digits;
     use std::convert::TryInto;
-    let mut tape = tape.clone();
+    let mut tape = tape.to_owned();
     let mut i = 0;
     loop {
         let instr: u64 = tape[i].try_into().expect("Negative Instruction is Invalid");
@@ -209,13 +209,13 @@ fn p2_generator(input: &str) -> Vec<i32> {
 }
 
 #[aoc(day7, part2)]
-fn solve_p2(tape: &Vec<i32>) -> i32 {
+fn solve_p2(tape: &[i32]) -> i32 {
     let sequences = (5..=9).permutations(5);
 
     let mut max_signal = 0;
     for seq in sequences {
         let mut output = 0;
-        let mut tapes = vec![tape.clone(); seq.len()];
+        let mut tapes = vec![tape.to_owned(); seq.len()];
         let mut ips = vec![0; seq.len()];
         let mut phases_passed = vec![false; seq.len()];
         'feedback: loop {
@@ -255,7 +255,7 @@ where
     use std::convert::TryInto;
 
     //let mut tape = tape.clone();
-    let output = loop {
+    loop {
         let instr: u64 = tape[*i]
             .try_into()
             .expect("Negative Instruction is Invalid");
@@ -420,9 +420,7 @@ where
             [9, 9] => break -1,
             _ => panic!("Unrecognized opcode: {:?}", opcode),
         };
-    };
-
-    output
+    }
 }
 
 #[cfg(test)]
