@@ -8,9 +8,7 @@ pub fn parse_program(input: &str) -> Vec<i64> {
 
 #[aoc(day9, part1)]
 fn solve_p1(tape: &Vec<i64>) -> i64 {
-    const TAPE_SIZE: usize = 10_000;
     let mut tape = tape.clone();
-    tape.append(&mut vec![0; TAPE_SIZE]);
     intcode_computer(&mut tape, &mut 0, &mut 0, || 1)
 }
 
@@ -21,9 +19,7 @@ fn p2_generator(input: &str) -> Vec<i64> {
 
 #[aoc(day9, part2)]
 fn solve_p2(tape: &Vec<i64>) -> i64 {
-    const TAPE_SIZE: usize = 10_000;
     let mut tape = tape.clone();
-    tape.append(&mut vec![0; TAPE_SIZE]);
     intcode_computer(&mut tape, &mut 0, &mut 0, || 2)
 }
 
@@ -55,9 +51,9 @@ where
         let read_param = |idx| {
             let parameter_mode = digits.get(digits.len() - 2 - idx).unwrap();
             match parameter_mode {
-                0 => tape[tape[*i + idx] as usize],
-                1 => tape[*i + idx],
-                2 => tape[(*relative_base + tape[*i + idx]) as usize],
+                0 => *tape.get(*tape.get(*i + idx).unwrap_or(&0) as usize).unwrap_or(&0),
+                1 => *tape.get(*i + idx).unwrap_or(&0),
+                2 => *tape.get((*relative_base + *tape.get(*i + idx).unwrap_or(&0)) as usize).unwrap_or(&0),
                 e => panic!("Unrecognized parameter_mode: {:?}", e),
             }
         };
@@ -66,12 +62,18 @@ where
             let parameter_mode = digits.get(digits.len() - 2 - idx).unwrap();
             match parameter_mode {
                 0 => {
-                    let output = tape[*i + idx] as usize;
+                    let output = *tape.get(*i + idx).unwrap_or(&0) as usize;
+                    if output >= tape.len() {
+                        tape.resize(output + 1, 0);
+                    }
                     tape[output] = data;
                 }
                 1 => panic!("Cannot write to immediate mode param"),
                 2 => {
-                    let output = (*relative_base + tape[*i + idx]) as usize;
+                    let output = (*relative_base + *tape.get(*i + idx).unwrap_or(&0)) as usize;
+                    if output >= tape.len() {
+                        tape.resize(output + 1, 0);
+                    }
                     tape[output] = data;
                 }
                 e => panic!("Unrecognized parameter_mode: {:?}", e),
@@ -168,7 +170,7 @@ mod tests {
         let mut tape = vec![
             109, 1, 204, -1, 1001, 100, 1, 100, 1008, 100, 16, 101, 1006, 101, 0, 99,
         ];
-        tape.append(&mut vec![0; 10_000]);
+        //tape.append(&mut vec![0; 10_000]);
         let mut i = 0;
         let mut relative_base = 0;
         loop {
@@ -184,7 +186,7 @@ mod tests {
     #[test]
     fn large_output() {
         let mut tape = vec![1102, 34915192, 34915192, 7, 4, 7, 99, 0];
-        tape.append(&mut vec![0; 10_000]);
+        //tape.append(&mut vec![0; 10_000]);
         let mut i = 0;
         let mut relative_base = 0;
         let output = intcode_computer(&mut tape, &mut i, &mut relative_base, || 0);
@@ -194,7 +196,7 @@ mod tests {
     #[test]
     fn large_output_2() {
         let mut tape = vec![104, 1125899906842624, 99];
-        tape.append(&mut vec![0; 10_000]);
+        //tape.append(&mut vec![0; 10_000]);
         let mut i = 0;
         let mut relative_base = 0;
         let output = intcode_computer(&mut tape, &mut i, &mut relative_base, || 0);

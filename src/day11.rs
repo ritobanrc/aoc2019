@@ -84,9 +84,7 @@ fn solve_p1(tape: &Vec<i64>) -> usize {
 
     let mut panels: HashMap<(i64, i64), Color> = HashMap::new();
 
-    const TAPE_SIZE: usize = 10_000;
     let mut tape = tape.clone();
-    tape.append(&mut vec![0; TAPE_SIZE]);
 
     let mut i = 0;
     let mut relative_base = 0;
@@ -131,9 +129,7 @@ fn solve_p2(tape: &Vec<i64>) -> usize {
 
     panels.insert((robot_x, robot_y), Color::White);
 
-    const TAPE_SIZE: usize = 10_000;
     let mut tape = tape.clone();
-    tape.append(&mut vec![0; TAPE_SIZE]);
 
     let mut i = 0;
     let mut relative_base = 0;

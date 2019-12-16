@@ -8,9 +8,7 @@ fn day13_gen(input: &str) -> Vec<i64> {
 
 #[aoc(day13, part1)]
 fn solve_p1(tape: &Vec<i64>) -> usize {
-    const TAPE_SIZE: usize = 10_000;
     let mut tape = tape.clone();
-    tape.append(&mut vec![0; TAPE_SIZE]);
 
     let mut screen = HashMap::new();
 
@@ -34,9 +32,7 @@ fn solve_p1(tape: &Vec<i64>) -> usize {
 
 #[aoc(day13, part2)]
 fn solve_p2(tape: &Vec<i64>) -> i64 {
-    const TAPE_SIZE: usize = 10_000;
     let mut tape = tape.clone();
-    tape.append(&mut vec![0; TAPE_SIZE]);
 
     tape[0] = 2;
 
