@@ -190,7 +190,7 @@ fn solve_p2(tape: &[i64]) -> i64 {
 
     #[derive(Debug)]
     enum Instruction {
-        Left, Right, Forward(usize)
+        L, R, F(usize)
     }
 
     let mut instructions = Vec::new();
@@ -204,14 +204,14 @@ fn solve_p2(tape: &[i64]) -> i64 {
         if dx != robot_dir.dx() || dy != robot_dir.dy() {
             // the first instruction won't be a forward
             if instructions.len() > 0 {
-                instructions.push(Instruction::Forward(in_this_dir));
+                instructions.push(Instruction::F(in_this_dir));
             }
             in_this_dir = 1;
             if dx == robot_dir.rotate_left().dx() && dy == robot_dir.rotate_left().dy() {
-                instructions.push(Instruction::Left);
+                instructions.push(Instruction::L);
                 robot_dir = robot_dir.rotate_left();
             } else {
-                instructions.push(Instruction::Right);
+                instructions.push(Instruction::R);
                 robot_dir = robot_dir.rotate_right();
             }
             continue
@@ -219,29 +219,39 @@ fn solve_p2(tape: &[i64]) -> i64 {
         in_this_dir += 1;
     }
 
+    instructions.push(Instruction::F(in_this_dir));
+
     println!("{:?}", instructions);
 
+
     /* 
-    let main = vec![65, 44, 66, 44, 67, 44, 66, 44, 65, 44, 67, 10];
-    let A = vec![82, 44, 56, 44, 82, 44, 56, 10];
-    let B = vec![82, 44, 52, 44, 82, 44, 52, 44, 82, 44, 56, 10];
-    let C = vec![76, 44, 54, 44, 76, 44, 50, 10];
+[L, F(4), L, F(6), L, F(8), L, F(12), L, F(8), R, F(12), L, F(12), L, F(8), R, F(12), L, F(12), L, F(4), L, F(6), L, F(8), L, F(12), L, F(8), R, F(12), L, F(12), R, F(12), L, F(6), L, F(6), L, F(8), L, F(4), L, F(6), L, F(8), L, F(12), R , F(12), L, F(6), L, F(6), L, F(8), L, F(8), R, F(12), L, F(12), R, F(12), L, F (6), L, F(6), L, F(8)]
 
-    use itertools::concat;
+L4 L6 L8 L12 | L8 R12 L12 | L8 R12 L12 | L4 L6 L8 L12 | L8 R12 L12 | R12 L6 L6 L8 | L4 L6 L8 L12 | R12 L6 L6 L8 | L8 R12 L12 | R12 L6 L6 L8
+      A      |   B        |    B       |   A          |      B     |       C      |      A       |        C     |   B        |     C
 
-    let vec = concat(vec![main, A, B, C, vec!['y' as u8 as i64, 10]]);
-    let mut iter = vec.iter();
+A = L4 L6 L8 L12 
+B = L8 R12 L12
+C = R12 L6 L6 L8
+     */
+
+    let main = "A,B,B,A,B,C,A,C,B,C\n".bytes();
+    let a = "L,4,L,6,L,8,L,6,6\n".bytes();
+    let b = "L,8,R,6,6,L,6,6\n".bytes();
+    let c = "R,6,6,L,6,L,6,L,8\n".bytes();
+
+    let end = "n\n".bytes();
+
+
+    let mut iter = main.chain(a).chain(b).chain(c).chain(end);
 
     loop {
-        let result = intcode_computer(&mut tape, &mut i, &mut rb, || { *iter.next().unwrap() }) as u8 as char;
+        let result = intcode_computer(&mut tape, &mut i, &mut rb, || { iter.next().unwrap() as i64 });
 
-        print!("{}", result);
-
-        if result == 'ÿ' {
-            break
+        if result >= 127 {
+            return result
         }
-    }
-    */
 
-    0
+        //print!("{}", result as u8 as char);
+    }
 }
