@@ -44,9 +44,7 @@ struct SeachResult(
     (i64, i64),
 );
 
-fn intcode_search(
-    tape: &[i64],
-) -> SeachResult {
+fn intcode_search(tape: &[i64]) -> SeachResult {
     let mut tape = tape.to_owned();
     let mut i = 0;
     let mut rb = 0;

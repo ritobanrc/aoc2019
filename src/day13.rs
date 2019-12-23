@@ -24,7 +24,10 @@ fn solve_p1(tape: &[i64]) -> usize {
         let y = intcode_computer(&mut tape, &mut i, &mut relative_base, || 0);
         let tile_type = intcode_computer(&mut tape, &mut i, &mut relative_base, || 0);
 
-        screen.entry(tile_type).or_insert_with(Vec::new).push((x, y));
+        screen
+            .entry(tile_type)
+            .or_insert_with(Vec::new)
+            .push((x, y));
     }
 
     screen.get(&2).unwrap().len()

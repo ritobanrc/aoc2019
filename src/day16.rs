@@ -1,6 +1,9 @@
 #[aoc_generator(day16)]
 fn get_signal(input: &str) -> Vec<i32> {
-    input.chars().map(|x| x.to_digit(10).unwrap() as i32).collect()
+    input
+        .chars()
+        .map(|x| x.to_digit(10).unwrap() as i32)
+        .collect()
 }
 
 struct FFTPattern {
@@ -12,7 +15,7 @@ impl FFTPattern {
     fn new(scale: usize) -> FFTPattern {
         FFTPattern {
             position: 0,
-            scale: scale
+            scale: scale,
         }
     }
 }
@@ -31,10 +34,20 @@ fn fft(digits: &[i32], phases: usize) -> Vec<i32> {
     let mut output = digits.to_owned();
 
     for _ in 0..phases {
-        output = output.iter().enumerate().map(|(i, _)| {
-            let pattern = FFTPattern::new(i + 1);
-            output.iter().zip(pattern).map(|(d, p)| d * p).sum::<i32>().abs() % 10
-        }).collect();
+        output = output
+            .iter()
+            .enumerate()
+            .map(|(i, _)| {
+                let pattern = FFTPattern::new(i + 1);
+                output
+                    .iter()
+                    .zip(pattern)
+                    .map(|(d, p)| d * p)
+                    .sum::<i32>()
+                    .abs()
+                    % 10
+            })
+            .collect();
     }
 
     output
@@ -52,17 +65,21 @@ fn solve_p1(digits: &[i32]) -> i32 {
     ans
 }
 
-
 #[aoc(day16, part2)]
 fn solve_p2(digits: &[i32]) -> i32 {
     use std::convert::TryInto;
 
-    let output = &digits.iter().cycle().take(digits.len() * 10_000).map(|x| *x).collect::<Vec<_>>();
+    let output = &digits
+        .iter()
+        .cycle()
+        .take(digits.len() * 10_000)
+        .map(|x| *x)
+        .collect::<Vec<_>>();
 
     let orig_len = output.len();
 
     // We only care about the second half
-    let mut output = output[output.len()/2..].to_owned();
+    let mut output = output[output.len() / 2..].to_owned();
 
     for _ in 0..100 {
         let mut next_ouput = Vec::new();
@@ -81,7 +98,7 @@ fn solve_p2(digits: &[i32]) -> i32 {
         offset += 10usize.pow(i.try_into().unwrap()) * *x as usize
     }
 
-    offset -= orig_len/2;
+    offset -= orig_len / 2;
 
     let mut ans = 0;
     for (i, x) in output[offset..offset + 8].iter().rev().enumerate() {
@@ -97,7 +114,10 @@ mod tests {
 
     #[test]
     fn day16_test1() {
-        assert_eq!(fft(&get_signal("12345678"), 4), vec![0, 1, 0, 2, 9, 4, 9, 8]);
+        assert_eq!(
+            fft(&get_signal("12345678"), 4),
+            vec![0, 1, 0, 2, 9, 4, 9, 8]
+        );
     }
 
     #[test]

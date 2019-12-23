@@ -12,10 +12,7 @@ fn parse_images(input: &str) -> Vec<Vec<u8>> {
 
 #[aoc(day8, part1)]
 fn solve_p1(input: &[Vec<u8>]) -> usize {
-    let layer = input
-        .iter()
-        .min_by_key(|v| bytecount::count(v, 0))
-        .unwrap();
+    let layer = input.iter().min_by_key(|v| bytecount::count(v, 0)).unwrap();
 
     bytecount::count(layer, 1) * bytecount::count(layer, 2)
 }
