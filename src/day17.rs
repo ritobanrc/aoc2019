@@ -173,12 +173,12 @@ fn solve_p2(tape: &[i64]) -> i64 {
                 );
                 if new_pos.0 >= 0 && new_pos.1 >= 0 {
                     let new_pos = (new_pos.0 as usize, new_pos.1 as usize);
-                    if new_pos.0 < width && new_pos.1 < height {
-                        if map[&new_pos] == TileType::Scaffold
-                            && (!path.contains(&new_pos) || intersections.contains(&new_pos))
-                        {
-                            neighbors.push(new_pos);
-                        }
+                    if new_pos.0 < width
+                        && new_pos.1 < height
+                        && map[&new_pos] == TileType::Scaffold
+                        && (!path.contains(&new_pos) || intersections.contains(&new_pos))
+                    {
+                        neighbors.push(new_pos);
                     }
                 }
             }

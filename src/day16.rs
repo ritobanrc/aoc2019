@@ -13,10 +13,7 @@ struct FFTPattern {
 
 impl FFTPattern {
     fn new(scale: usize) -> FFTPattern {
-        FFTPattern {
-            position: 0,
-            scale: scale,
-        }
+        FFTPattern { position: 0, scale }
     }
 }
 
