@@ -1,4 +1,4 @@
-use crate::day9::{parse_program, intcode_computer};
+use crate::day9::{intcode_computer, parse_program};
 
 #[aoc_generator(day21)]
 fn day21_gen(input: &str) -> Vec<i64> {
@@ -24,8 +24,6 @@ WALK
 
     test_program(tape, program).unwrap()
 }
-
-
 
 #[aoc(day21, part2)]
 fn solve_p2(tape: &[i64]) -> i64 {
@@ -53,7 +51,6 @@ RUN
     test_program(tape, program).unwrap()
 }
 
-
 fn test_program(tape: &[i64], program: &str) -> (Option<i64>) {
     let mut program_feed = program.bytes();
 
@@ -67,11 +64,11 @@ fn test_program(tape: &[i64], program: &str) -> (Option<i64>) {
         });
 
         if result == -1 {
-            return None
+            return None;
         }
 
         if result > 127 {
-            return  Some(result);
+            return Some(result);
         }
         print!("{}", result as u8 as char);
     }
