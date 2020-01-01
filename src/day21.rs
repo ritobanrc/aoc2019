@@ -51,7 +51,7 @@ RUN
     test_program(tape, program).unwrap()
 }
 
-fn test_program(tape: &[i64], program: &str) -> (Option<i64>) {
+fn test_program(tape: &[i64], program: &str) -> Option<i64> {
     let mut program_feed = program.bytes();
 
     let mut tape = tape.to_owned();

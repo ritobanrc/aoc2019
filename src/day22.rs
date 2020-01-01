@@ -96,32 +96,31 @@ fn solve_p2(shuffle: &[Instruction]) -> u64 {
 }
 
 /// Precondition: a is coprie to m
-fn mod_inv(a: u64, m: u64)  -> u64
-{ 
-    power(a, m-2, m)
-} 
-  
-// To compute x^y under modulo m 
-fn power(x: u64, y: u64, m: u64) -> u64 { 
+fn mod_inv(a: u64, m: u64) -> u64 {
+    power(a, m - 2, m)
+}
+
+// To compute x^y under modulo m
+fn power(x: u64, y: u64, m: u64) -> u64 {
     if y == 0 {
-        return 1; 
+        return 1;
     }
 
-    let mut p = power(x, y/2, m) % m; 
+    let mut p = power(x, y / 2, m) % m;
     p = (p * p) % m;
 
-    if y%2 == 0 {
+    if y % 2 == 0 {
         p
-    }  else {
+    } else {
         (x * p) % m
     }
-} 
+}
 // Example
 //
 //
 // 0 1 2 3 4 5 6 7 8 9
 // deal with increment 7
-// 0 3     2 5   1 4   
+// 0 3     2 5   1 4
 // deal into new stack
 // deal into new stack
 // Result: 0 3 6 9 2 5 8 1 4 7
